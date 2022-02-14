@@ -1,22 +1,14 @@
-import express, { request } from "express";
+import express, { Request, Response } from "express";
+import { IUser, IToken } from "../types/user";
 import userModel from "../models/user";
 import tokenModel from "../models/token";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
-import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 dotenv.config();
 const router = express.Router();
-interface IUser {
-  username: string;
-  password: string;
-}
-interface IToken {
-  _id: any;
-  userId: any;
-  refreshToken: string;
-}
+
 function generateAccessToken(payload: any) {
   return jwt.sign(
     {
@@ -35,7 +27,7 @@ router.route("/token/:userid").post(async (req: Request, res: Response) => {
     userId: req.params.userid,
   });
   if (!findRefreshToken) {
-    res.status(403).send("Refresh token not found");
+    res.status(403).send({ result: false, message: "Refresh token not found" });
   } else {
     jwt.verify(
       findRefreshToken.refreshToken,
@@ -43,7 +35,11 @@ router.route("/token/:userid").post(async (req: Request, res: Response) => {
       (err: any, data: any) => {
         if (err) return res.sendStatus(403);
         const accessToken = generateAccessToken(data.username);
-        res.status(200).send({ accessToken: accessToken });
+        res.status(200).send({
+          result: true,
+          message: "New access token has been generated",
+          accessToken: accessToken,
+        });
       }
     );
   }
@@ -70,7 +66,8 @@ router.route("/login").post(async (req: Request, res: Response) => {
             );
           res
             .header("authorization", "Bearer " + accessToken)
-            .send({ userExist, accessToken, refreshToken });
+            .status(200)
+            .send({ loggedUser: userExist, accessToken, refreshToken });
         } else {
           res.status(204).send("incorrect password");
         }

@@ -17,7 +17,7 @@ async function existInCluster(user: IUser): Promise<Result> {
     message: "Ok",
   };
 
-  await userModel.findOne({ username: user.username }).then((data) => {
+  await userModel.findOne({ username: user.username }).then((data: any) => {
     const searchedUser: IUser = data;
     if (searchedUser?.username == user.username) {
       returnedObject = {
