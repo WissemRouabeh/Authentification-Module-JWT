@@ -30,7 +30,7 @@ async function existInCluster(user: IUser): Promise<Result> {
 
   return returnedObject;
 }
-//middleware function
+//middleware function bellow
 function validateUser(req: Request, res: Response, next: any): void {
   const user: IUser = req.body;
   //user exist or not
