@@ -4,13 +4,16 @@ import userModel from "../models/user";
 import dotenv from "dotenv";
 import { verifyToken, testMiddleware } from "../middleware/auth";
 import { Request, Response } from "express";
+import { validateUser } from "../controls/userValidator";
 import bcrypt from "bcryptjs";
 dotenv.config();
+
 const router = express.Router();
 
 interface CustomRequest extends Request {
   user: any;
 }
+
 interface IUser {
   _id: mongoose.Types.ObjectId;
   username: string;
@@ -45,5 +48,8 @@ router
   .get(verifyToken, (req: CustomRequest, res: Response) => {
     res.send("Hello " + req.user);
   });
+router.route("/validate").post(validateUser, (req, res) => {
+  res.send("okay");
+});
 
 export default router;

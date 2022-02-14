@@ -8,7 +8,7 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const http_1 = __importDefault(require("http"));
 const cors_1 = __importDefault(require("cors"));
 const user_1 = __importDefault(require("./routes/user"));
-const token_1 = __importDefault(require("./routes/token"));
+const authentification_1 = __importDefault(require("./routes/authentification"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
@@ -21,7 +21,7 @@ mongoose_1.default.connect(MONGO_URI, () => {
     console.log("Connected");
 });
 app.use("/api/user/", user_1.default);
-app.use("/api/token/", token_1.default);
+app.use("/api/authentification/", authentification_1.default);
 server.listen(PORT, () => {
     console.log("Listening on " + PORT);
 });
