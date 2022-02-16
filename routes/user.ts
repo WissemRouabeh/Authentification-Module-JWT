@@ -31,6 +31,20 @@ router.route("/").get(async (req: Request, res: Response) => {
       });
     });
 });
+//Get user with id
+router.route("/:id").get(async (req: Request, res: Response) => {
+  let id = req.params.id;
+  await userModel
+    .findById(id)
+    .then((doc) => {
+      res
+        .status(200)
+        .send({ result: true, message: "User found", provider: doc });
+    })
+    .catch((err) => {
+      res.status(404).send({ result: false, message: "User not found" });
+    });
+});
 //POST register user
 router.route("/").post(validateUser, async (req: Request, res: Response) => {
   const user: IUser = req.body;

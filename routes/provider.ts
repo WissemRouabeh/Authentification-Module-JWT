@@ -15,6 +15,21 @@ router.route("/").get(async (req: Request, res: Response) => {
     })
     .catch((error: any) => [res.status(400).send({ result: false, error })]);
 });
+//Get provider with id
+router.route("/:id").get(async (req: Request, res: Response) => {
+  let id = req.params.id;
+  await providerModel
+    .findById(id)
+    .populate("User")
+    .then((doc) => {
+      res
+        .status(200)
+        .send({ result: true, message: "Provider found", provider: doc });
+    })
+    .catch((err) => {
+      res.status(404).send({ result: false, message: "Provider not found" });
+    });
+});
 //POST provider
 router.route("/").post(async (req: Request, res: Response) => {
   let provider: IProvider = req.body;
@@ -72,5 +87,26 @@ router.route("/:id").delete(async (req: Request, res: Response) => {
         .send({ result: false, message: "An error occured", error })
     );
 });
+//Get provider with userid
+router
+  .route("/findbyuserid/:userid")
+  .get(async (req: Request, res: Response) => {
+    let userid = req.params.userid;
+    await providerModel
+      .find({ User: userid })
+      .populate("User")
+      .then((docs) => {
+        if (docs.length == 0) {
+          res
+            .status(404)
+            .send({ result: false, message: "Provider not found" });
+        } else
+          res.status(200).send({
+            result: true,
+            message: "Provider found",
+            provider: docs[0],
+          });
+      });
+  });
 
 export default router;
