@@ -28,8 +28,6 @@ async function existInCluster(user: IUser): Promise<Result> {
           result: true,
         };
       }
-
-      //we can add email also
     });
 
   return returnedObject;
