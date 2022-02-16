@@ -1,18 +1,14 @@
 import mongoose, { Date, model, Schema } from "mongoose";
-interface user {
-  _id?: any;
-  username: string;
-  password: string;
-  joinDate?: Date;
-}
-const userSchema = new Schema<user>({
+import { IUser } from "../types/user";
+const userSchema = new Schema<IUser>({
   _id: mongoose.Schema.Types.ObjectId,
   username: String,
   password: String,
+  email: String,
   joinDate: {
     type: Date,
     default: Date.now(),
   },
 });
-const userModel = model<user>("User", userSchema);
+const userModel = model<IUser>("User", userSchema);
 export default userModel;

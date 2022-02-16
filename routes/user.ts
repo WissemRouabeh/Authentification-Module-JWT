@@ -2,7 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import userModel from "../models/user";
 import dotenv from "dotenv";
-import { verifyToken, testMiddleware } from "../middleware/auth";
+import { verifyToken } from "../middleware/auth";
 import { Request, Response } from "express";
 import { validateUser } from "../controls/userValidator";
 import { IUser } from "../types/user";
