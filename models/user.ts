@@ -1,5 +1,5 @@
-import mongoose, { Date, model, Schema } from "mongoose";
-import { IUser } from "../types/user";
+import mongoose, { model, Schema } from "mongoose";
+import { IUser } from "../types/";
 const userSchema = new Schema<IUser>({
   _id: mongoose.Schema.Types.ObjectId,
   username: String,

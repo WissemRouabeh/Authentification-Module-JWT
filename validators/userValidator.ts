@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import userModel from "../models/user";
-import { IUser } from "../types/user";
+import { IUser } from "../types";
 
 type Result = {
   result: boolean;

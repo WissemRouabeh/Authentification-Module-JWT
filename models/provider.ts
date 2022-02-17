@@ -1,5 +1,5 @@
 import mongoose, { Date, model, Schema } from "mongoose";
-import { IProvider } from "../types/provider";
+import { IProvider } from "../types/";
 const providerSchema = new Schema<IProvider>({
   _id: mongoose.Types.ObjectId,
   firstname: String,

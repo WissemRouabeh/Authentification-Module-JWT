@@ -1,5 +1,5 @@
 import mongoose, { Date, model, Schema } from "mongoose";
-import { IServiceSeeker } from "../types/serviceSeeker";
+import { IServiceSeeker } from "../types/";
 const serviceSeekerSchema = new Schema<IServiceSeeker>({
   _id: mongoose.Types.ObjectId,
   firstname: String,
