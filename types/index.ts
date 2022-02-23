@@ -12,6 +12,8 @@ export interface IUser {
   username: string;
   password: string;
   email: string;
+  pending: boolean;
+  accountStatus: boolean;
   joinDate?: Date;
 }
 export interface IToken {

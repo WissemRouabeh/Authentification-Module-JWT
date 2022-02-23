@@ -23,7 +23,7 @@ router.route("/").get(getUsers);
 //Get user with id
 router.route("/:id").get(getUserById);
 //POST register user
-router.route("/").post(registerUser);
+router.route("/").post(validateUser, registerUser);
 //PUT update user [:id]
 router.route("/:id").put(validateUser, updateUser);
 //DELETE user [:id]

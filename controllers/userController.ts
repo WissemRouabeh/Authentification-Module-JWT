@@ -5,34 +5,28 @@ import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import catchAsync from "../utils/catchAsync";
 import GlobalError from "../utils/GlobalError";
-const getUsers = async function (req: Request, res: Response) {
-  userModel
-    .find()
-    .then((docs: any) => {
-      let users: Array<IUser> = docs;
-      res.send(users);
-    })
-    .catch((error) => {
-      res.status(400).send({
-        result: false,
-        message: "An error occured",
-        error,
-      });
-    });
-};
-const getUserById = async function (req: Request, res: Response) {
+const getUsers = catchAsync(async (req: Request, res: Response, next: any) => {
+  const users: Array<IUser> = await userModel.find().select("+password").exec();
+  if (users.length == 0)
+    return next(new GlobalError("Empty list of users", 204));
+  res.status(200).send({
+    status: "success",
+    result: true,
+    rows: users.length,
+    users,
+  });
+});
+const getUserById = catchAsync(async (req: Request, res: Response) => {
   let id = req.params.id;
-  await userModel
-    .findById(id)
-    .then((doc) => {
-      res
-        .status(200)
-        .send({ result: true, message: "User found", provider: doc });
-    })
-    .catch((err) => {
-      res.status(404).send({ result: false, message: "User not found" });
-    });
-};
+  const user: IUser = await userModel.findById(id).exec();
+
+  res.status(200).send({
+    status: "success",
+    result: true,
+    message: "User found",
+    user,
+  });
+});
 
 const registerUser = catchAsync(
   async (req: Request, res: Response, next: any) => {
@@ -51,9 +45,12 @@ const registerUser = catchAsync(
 
     const newUser = new userModel(user);
     await newUser.save();
-    res
-      .status(201)
-      .send({ result: true, message: "User registred", new: newUser });
+    res.status(201).send({
+      status: "success",
+      result: true,
+      message: "User registred",
+      new: newUser,
+    });
   }
 );
 const updateUser = catchAsync(
@@ -66,6 +63,7 @@ const updateUser = catchAsync(
       return next(new GlobalError("No user found with this id:" + id, 404));
     else
       res.status(201).send({
+        status: "success",
         result: true,
         message: "User updated succesfully",
         old: updatedUser,
@@ -81,6 +79,7 @@ const deleteUser = catchAsync(
       return next(new GlobalError("No user found with this id:" + id, 404));
     else
       res.status(201).send({
+        status: "success",
         result: true,
         message: "User deleted succesfully",
         old: deletedUser,

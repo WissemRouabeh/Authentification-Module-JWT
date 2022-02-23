@@ -2,9 +2,12 @@ import mongoose, { model, Schema } from "mongoose";
 import { IUser } from "../types/";
 const userSchema = new Schema<IUser>({
   _id: mongoose.Schema.Types.ObjectId,
-  username: String,
-  password: { type: String, required: [true, "Password is required"] },
-  // email: String,
+  username: { type: String, required: [true, "Username is required"] },
+  password: {
+    type: String,
+    select: false,
+    required: [true, "Password is required"],
+  },
 
   email: {
     type: String,
@@ -14,10 +17,13 @@ const userSchema = new Schema<IUser>({
       "email not valid",
     ],
   },
+  pending: { type: Boolean, default: false },
+  accountStatus: { type: Boolean, default: false },
   joinDate: {
     type: Date,
     default: Date.now(),
   },
 });
+
 const userModel = model<IUser>("User", userSchema);
 export default userModel;
